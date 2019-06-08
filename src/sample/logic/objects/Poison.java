@@ -1,4 +1,4 @@
-package sample.logic.components;
+package sample.logic.objects;
 
 import sample.core.GameObject;
 import sample.logic.GameObjectType;

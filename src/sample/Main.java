@@ -1,51 +1,46 @@
 package sample;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import sample.core.CollisionDetector;
-import sample.core.GameObject;
-import sample.logic.GameObjectType;
-import sample.logic.OnCollisionAction;
+import sample.core.Direction;
+import sample.logic.GameController;
 import sample.view.GameCanvas;
-
-import java.util.List;
+import sample.view.GameLayout;
 
 public class Main extends Application {
 
+
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        GameCanvas gameCanvas = new GameCanvas(400.d, 400.d);
-
-        GameObject snakeHead = new GameObject(30, 20, 10, 10, GameObjectType.SNAKE_HEAD);
-        gameCanvas.addGameObject(snakeHead);
-        gameCanvas.addGameObject(new GameObject(40, 20, 10, 10, GameObjectType.FOOD));
-        gameCanvas.addGameObject(new GameObject(34, 24, 10, 10, GameObjectType.POISON));
-        VBox root = new VBox();
-        root.getChildren().add(gameCanvas);
-
-        new AnimationTimer() {
-            long lastTick = 0;
-            public void handle(long now) {
-                if (lastTick == 0) {
-                    lastTick = now;
-                    gameCanvas.render();
-                    List<OnCollisionAction> actions = CollisionDetector.detectCollisionsWithRoot(snakeHead, gameCanvas.getGameObjects());
-                    return;
+        GameCanvas gameCanvas = new GameCanvas(GameController.GAME_CANVAS_WIDTH, GameController.GAME_CANVAS_HEIGHT);
+        GameController gameController = new GameController(gameCanvas);
+        GameLayout gameLayout = new GameLayout(gameCanvas, gameController);
+        primaryStage.setTitle("Snake :)");
+        Scene scene = new Scene(gameLayout, GameController.MAIN_STAGE_WIDTH, gameController.MAIN_STAGE_HEIGHT);
+        scene.setOnKeyPressed(key ->  {
+            switch (key.getCode()) {
+                case UP: {
+                    gameController.setCurrentDirection(Direction.UP);
+                    break;
                 }
-
-                if (now - lastTick > 1000000000 / 5) {
-                    lastTick = now;
-                    gameCanvas.render();
+                case DOWN: {
+                    gameController.setCurrentDirection(Direction.DOWN);
+                    break;
+                }
+                case LEFT: {
+                    gameController.setCurrentDirection(Direction.LEFT);
+                    break;
+                }
+                case RIGHT: {
+                    gameController.setCurrentDirection(Direction.RIGHT);
+                    break;
                 }
             }
-        }.start();
-
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        });
+        primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 

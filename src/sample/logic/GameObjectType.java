@@ -4,13 +4,13 @@ import javafx.scene.paint.Color;
 
 public enum GameObjectType {
 
-    SNAKE_HEAD("SnakeHead", Color.LIGHTGREEN,OnCollisionAction.NONE),
+    SNAKE_HEAD("SnakeHead", Color.LIGHTGREEN, OnCollisionAction.NONE),
     SNAKE_BODY("SnakePart", Color.GREEN, OnCollisionAction.DEAD),
     FOOD("Food", Color.BLUE, OnCollisionAction.GAIN),
     SUPER_FOOD("SuperFood", Color.LIGHTBLUE, OnCollisionAction.DOUBLE_GAIN),
     POISON("Poison", Color.DARKRED, OnCollisionAction.LOSS),
     SUPER_POISON("SuperPoison", Color.RED, OnCollisionAction.DOUBLE_LOSS),
-    WALL("Wall", Color.GREY, OnCollisionAction.DEAD);
+    WALL("Wall", Color.GREY, OnCollisionAction.NONE);
 
     private String typeName;
     private Color color;
