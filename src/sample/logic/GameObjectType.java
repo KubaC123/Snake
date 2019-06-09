@@ -7,10 +7,9 @@ public enum GameObjectType {
     SNAKE_HEAD("SnakeHead", Color.LIGHTGREEN, OnCollisionAction.NONE),
     SNAKE_BODY("SnakePart", Color.BLUE, OnCollisionAction.DEAD),
     FOOD("Food", Color.BLUE, OnCollisionAction.GAIN),
-    SUPER_FOOD("SuperFood", Color.LIGHTBLUE, OnCollisionAction.DOUBLE_GAIN),
     POISON("Poison", Color.DARKRED, OnCollisionAction.LOSS),
-    SUPER_POISON("SuperPoison", Color.RED, OnCollisionAction.DOUBLE_LOSS),
-    WALL("Wall", Color.GREY, OnCollisionAction.NONE);
+    WALL("Wall", Color.GREY, OnCollisionAction.DEAD),
+    FIRE("Fire", Color.ORANGE, OnCollisionAction.BURNED);
 
     private String typeName;
     private Color color;

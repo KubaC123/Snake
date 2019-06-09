@@ -4,9 +4,7 @@ import javafx.concurrent.Task;
 import sample.core.CollisionDetector;
 import sample.core.Direction;
 import sample.core.GameObject;
-import sample.logic.objects.Food;
-import sample.logic.objects.Poison;
-import sample.logic.objects.Snake;
+import sample.logic.objects.*;
 import sample.view.GameCanvas;
 
 import java.util.ArrayList;
@@ -31,6 +29,8 @@ public class GameController {
     private Snake snake;
     private AtomicReference<Food> food;
     private AtomicReference<Poison> poison;
+    private AtomicReference<Fire> fire;
+    private List<AtomicReference<Wall>> walls;
     private AtomicInteger score = new AtomicInteger(0);
     private GameCanvas gameCanvas;
 
@@ -40,6 +40,8 @@ public class GameController {
         snake = ObjectSpawned.newSnake();
         food = new AtomicReference<>(ObjectSpawned.startFood());
         poison = new AtomicReference<>(null);
+        fire = new AtomicReference<>(null);
+        walls = new ArrayList<>();
         startGame();
     }
 
@@ -76,6 +78,10 @@ public class GameController {
         List<GameObject> allGameObjects = new ArrayList<>(snake.getHeadAndBody());
         Optional.ofNullable(food.get()).ifPresent(allGameObjects::add);
         Optional.ofNullable(poison.get()).ifPresent(allGameObjects::add);
+        Optional.ofNullable(fire.get()).ifPresent(allGameObjects::add);
+        walls.stream()
+                .map(AtomicReference::get)
+                .forEach(allGameObjects::add);
         return allGameObjects;
     }
 
@@ -95,20 +101,7 @@ public class GameController {
     }
 
     private void resolveCollisions(List<OnCollisionAction> collisionActions) {
-        checkCollisionWithWalls().ifPresent(collisionActions::add);
         collisionActions.forEach(this::resolveCollision);
-    }
-
-    private Optional<OnCollisionAction> checkCollisionWithWalls() {
-//        OnCollisionAction action = null;
-//        if((snake.getHead().getY() < 0) ||
-//                (snake.getHead().getY() > gameCanvas.getHeight()) ||
-//                (snake.getHead().getX() < 0) ||
-//                (snake.getHead().getX() > gameCanvas.getWidth())) {
-//            action = OnCollisionAction.DEAD;
-//        }
-//        return Optional.ofNullable(action);
-        return Optional.empty();
     }
 
     private void resolveCollision(OnCollisionAction onCollisionAction) {
@@ -125,14 +118,8 @@ public class GameController {
                 poisonEaten();
                 break;
             }
-            case NONE: {
-                break;
-            }
-            case DOUBLE_GAIN: {
-                break;
-            }
-            case DOUBLE_LOSS: {
-                break;
+            case BURNED: {
+                burned();
             }
             default: {
                 break;
@@ -142,11 +129,22 @@ public class GameController {
 
     private void foodEaten() {
         poison.set(null);
+        fire.set(null);
         score.set(score.intValue() + 20);
         snake.addBodyPart();
         food.set(ObjectSpawned.newFood(getAllCurrentGameObjects()));
+        randomlySpawnObstacles();
+    }
+
+    private void randomlySpawnObstacles() {
         if(ObjectSpawned.random.nextInt(2) == 1) {
             poison.set(ObjectSpawned.newPoison(getAllCurrentGameObjects()));
+        }
+        if(ObjectSpawned.random.nextInt(8) == 4) {
+            fire.set(ObjectSpawned.newFire(getAllCurrentGameObjects()));
+        }
+        if(ObjectSpawned.random.nextInt(3) == 2) {
+            walls.add(new AtomicReference<>(ObjectSpawned.newWall(getAllCurrentGameObjects())));
         }
     }
 
@@ -154,6 +152,14 @@ public class GameController {
         poison.set(null);
         snake.removeLastBodyPart();
         score.set(score.intValue() - 20);
+    }
+
+    private void burned() {
+        fire.set(null);
+        for(int i = 0; i < 4; i++) {
+            snake.removeLastBodyPart();
+        }
+        score.set(score.intValue() - 80);
     }
 
     public void setCurrentDirection(Direction direction) {

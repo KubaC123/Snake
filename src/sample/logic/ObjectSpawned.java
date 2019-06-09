@@ -2,9 +2,7 @@ package sample.logic;
 
 import javafx.geometry.Point2D;
 import sample.core.GameObject;
-import sample.logic.objects.Food;
-import sample.logic.objects.Poison;
-import sample.logic.objects.Snake;
+import sample.logic.objects.*;
 
 import java.util.List;
 import java.util.Random;
@@ -37,6 +35,18 @@ class ObjectSpawned {
                 GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT);
     }
 
+    static Fire newFire(List<GameObject> allGameObjects) {
+        Point2D point = getRandomSpawnPoint(allGameObjects);
+        return new Fire(point.getX(), point.getY(),
+                GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT);
+    }
+
+    static Wall newWall(List<GameObject> allGameObjects) {
+        Point2D point = getRandomSpawnPoint(allGameObjects);
+        return new Wall(point.getX(), point.getY(),
+                GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT);
+    }
+
     private static Point2D getRandomSpawnPoint(List<GameObject> allGameObjects) {
         double xCoordinate = 0.d;
         double yCoordinate = 0.d;
@@ -44,7 +54,6 @@ class ObjectSpawned {
         while(!found) {
             xCoordinate = random.nextInt((int)GameController.GAME_CANVAS_WIDTH/(int) GameObject.DEFAULT_WIDTH);
             yCoordinate = random.nextInt((int)GameController.GAME_CANVAS_HEIGHT/(int)GameObject.DEFAULT_HEIGHT);
-
             for(GameObject gameObject : allGameObjects) {
                 if(gameObject.getX() == xCoordinate && gameObject.getY() == yCoordinate);
             }
