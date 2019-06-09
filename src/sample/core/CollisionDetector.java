@@ -21,4 +21,5 @@ public class CollisionDetector {
         double distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
         return distance < gameObject.getWidth() || distance < gameObject.getHeight();
     }
+
 }

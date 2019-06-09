@@ -16,10 +16,10 @@ public class Snake {
         this.head = new SnakeHead(GameController.SNAKE_INITIAL_X_COORDINATE, GameController.SNAKE_INITIAL_Y_COORDINATE,
                 GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, GameController.DEFAULT_DIRECTION);
         this.body = new ArrayList<>();
-        body.add(new SnakeBody(GameController.SNAKE_INITIAL_X_COORDINATE - GameObject.DEFAULT_HEIGHT, GameController.SNAKE_INITIAL_Y_COORDINATE,
-                GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, GameController.DEFAULT_DIRECTION));
-        body.add(new SnakeBody(GameController.SNAKE_INITIAL_X_COORDINATE - 2*GameObject.DEFAULT_HEIGHT, GameController.SNAKE_INITIAL_Y_COORDINATE,
-                GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, GameController.DEFAULT_DIRECTION));
+        body.add(new SnakeBody(GameController.SNAKE_INITIAL_X_COORDINATE - GameObject.DEFAULT_HEIGHT,
+                GameController.SNAKE_INITIAL_Y_COORDINATE, GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, GameController.DEFAULT_DIRECTION));
+        body.add(new SnakeBody(GameController.SNAKE_INITIAL_X_COORDINATE - 2*GameObject.DEFAULT_HEIGHT,
+                GameController.SNAKE_INITIAL_Y_COORDINATE, GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, GameController.DEFAULT_DIRECTION));
     }
 
     public void move(Direction direction) {
@@ -30,7 +30,7 @@ public class Snake {
             prevBodyPartDirection = body.get(bodyNr).getPreviousDirection();
         }
         try {
-            Thread.sleep(400);
+            Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }

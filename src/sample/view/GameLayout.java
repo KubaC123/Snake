@@ -24,8 +24,6 @@ public class GameLayout extends HBox {
 
     private VBox rightSideMenu() {
         List<Button> buttons = new ArrayList<>();
-//        buttons.add(startGameButton());
-//        buttons.add(stopGameButton());
         buttons.add(restartGameButton());
         buttons.forEach(button -> button.setMaxSize(100.0, 30.0));
         VBox vbox = new VBox();
