@@ -1,11 +1,16 @@
 package sample.view;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.paint.Color;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import sample.core.GameObject;
+import sample.logic.GameObjectType;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GameCanvas extends Canvas {
@@ -21,14 +26,22 @@ public class GameCanvas extends Canvas {
     }
 
     public void render() {
+        GraphicsContext graphicsContext = getGraphicsContext2D();
+        graphicsContext.clearRect(0, 0, getWidth(), getHeight());
         System.out.println("RENDER");
-        getGraphicsContext2D().clearRect(0, 0, getWidth(), getHeight());
-        getGraphicsContext2D().setFill(Color.BLACK);
         gameObjects.stream()
                 .collect(Collectors.groupingBy(GameObject::getType))
                 .forEach((type, objects) -> {
-                    getGraphicsContext2D().setFill(type.getColor());
-                    objects.forEach(gameObject -> getGraphicsContext2D().fillRect(gameObject.getX(), gameObject.getY(), gameObject.getWidth(), gameObject.getHeight()));
+                    graphicsContext.setFill(type.getColor());
+                    objects.forEach(gameObject -> drawGameObject(gameObject, graphicsContext));
                 });
+    }
+
+    private void drawGameObject(GameObject gameObject, GraphicsContext graphicsContext) {
+        if(Objects.nonNull(gameObject.getImage())) {
+            graphicsContext.drawImage(gameObject.getImage(), gameObject.getX(), gameObject.getY(), gameObject.getWidth(), gameObject.getHeight());
+        } else {
+            graphicsContext.fillRect(gameObject.getX(), gameObject.getY(), gameObject.getWidth(), gameObject.getHeight());
+        }
     }
 }

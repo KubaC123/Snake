@@ -36,12 +36,34 @@ public class Snake {
         }
     }
 
-    public GameObject getHead() {
-        return head;
+    public void addBodyPart() {
+        int bodySize = body.size();
+        double xStart = body.get(bodySize - 1).getX();
+        double yStart = body.get(bodySize - 1).getY();
+        Direction lastBodyPartDirection = body.get(bodySize - 1).getCurrentDirection();
+        switch(lastBodyPartDirection) {
+            case UP: {
+                yStart += 20.d;
+                break;
+            }
+            case DOWN: {
+                yStart -= 20.d;
+                break;
+            }
+            case LEFT: {
+                xStart += 20.d;
+                break;
+            }
+            case RIGHT: {
+                xStart -= 20.d;
+                break;
+            }
+        }
+        body.add(new SnakeBody(xStart, yStart, GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, lastBodyPartDirection));
     }
 
-    public List<SnakeBody> getBody() {
-        return body;
+    public GameObject getHead() {
+        return head;
     }
 
     public List<GameObject> getHeadAndBody() {

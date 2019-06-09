@@ -1,12 +1,14 @@
 package sample.logic;
 
 import javafx.concurrent.Task;
+import sample.core.CollisionDetector;
 import sample.core.Direction;
 import sample.core.GameObject;
 import sample.logic.objects.Food;
 import sample.logic.objects.Snake;
 import sample.logic.objects.Wall;
 import sample.view.GameCanvas;
+import sample.view.Images;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ public class GameController {
 
         snake.getHeadAndBody().forEach(object -> System.out.println("x: " + object.getX()  +  ", y:" + object.getY()));
 
-        food = new AtomicReference<>(new Food(120, 120, 20, 20));
+        food = new AtomicReference<>(new Food(120, 120, 20, 20, Images.APPLE));
     }
 
     private ArrayList<Wall> getRoomWalls() {
@@ -66,7 +68,7 @@ public class GameController {
 
     public void restartGame() {
         snake = new Snake();
-        food.set(new Food(120, 120, 20, 20));
+        food.set(new Food(120, 120, 20, 20, Images.APPLE));
         this.currentDirection = Direction.RIGHT;
         gameRunning = true;
     }
@@ -89,6 +91,7 @@ public class GameController {
             protected Void call() throws Exception {
                 while(gameRunning && !isCancelled()) {
                     snake.move(currentDirection);
+                    resolveCollisions(CollisionDetector.detectCollisionsWithRoot(snake.getHead(), getAllCurrentGameObjects()));
                 }
                 return null;
             }
@@ -98,6 +101,7 @@ public class GameController {
     }
 
     private void resolveCollisions(List<OnCollisionAction> collisionActions) {
+        System.out.println("RESOLVING COLLISIONS");
         checkCollisionWithWalls(collisionActions);
         collisionActions.forEach(this::resolveCollision);
     }
@@ -117,6 +121,7 @@ public class GameController {
             }
             case GAIN: {
                 System.out.println("FOOD EATEN");
+                snake.addBodyPart();
                 newFood();
                 break;
             }
@@ -151,7 +156,7 @@ public class GameController {
             }
             found = true;
         }
-        food.set(new Food(foodXCoordinate, foodYCoordinate, 20 ,20));
+        food.set(new Food(foodXCoordinate, foodYCoordinate, 20 ,20, Images.APPLE));
         System.out.println(food.get().getX());System.out.println(food.get().getY());
     }
 
