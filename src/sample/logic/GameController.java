@@ -1,7 +1,6 @@
 package sample.logic;
 
 import javafx.concurrent.Task;
-import sample.core.CollisionDetector;
 import sample.core.Direction;
 import sample.core.GameObject;
 import sample.logic.objects.Food;
@@ -16,11 +15,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class GameController {
 
-    public static double SPEED = 5.d;
-    public static double GAME_CANVAS_WIDTH = 500.d;
-    public static double GAME_CANVAS_HEIGHT = 500.d;
-    public static double MAIN_STAGE_WIDTH = 600.d;
-    public static double MAIN_STAGE_HEIGHT = 600.d;
+    public static double SPEED = 20.d;
+    public static double GAME_CANVAS_WIDTH = 600.d;
+    public static double GAME_CANVAS_HEIGHT = 600.d;
+    public static double MAIN_STAGE_WIDTH = 650.d;
+    public static double MAIN_STAGE_HEIGHT = 650.d;
+    public static final double SNAKE_INITIAL_X_COORDINATE = 100.d;
+    public static final double SNAKE_INITIAL_Y_COORDINATE = 100.d;
+    public static Direction DEFAULT_DIRECTION = Direction.RIGHT;
 
     private Direction currentDirection;
     private boolean gameRunning = true;
@@ -35,10 +37,7 @@ public class GameController {
         this.currentDirection = Direction.RIGHT;
         random = new Random();
         this.gameCanvas = gameCanvas;
-        snake = new Snake(Snake.INITIAL_X_COORDINATE, Snake.INITIAL_Y_COORDINATE);
-        snake.feed();
-        snake.feed();
-        snake.feed();
+        snake = new Snake();
 
         snake.getHeadAndBody().forEach(object -> System.out.println("x: " + object.getX()  +  ", y:" + object.getY()));
 
@@ -66,7 +65,7 @@ public class GameController {
     }
 
     public void restartGame() {
-        snake = new Snake(Snake.INITIAL_X_COORDINATE, Snake.INITIAL_Y_COORDINATE);
+        snake = new Snake();
         food.set(new Food(120, 120, 20, 20));
         this.currentDirection = Direction.RIGHT;
         gameRunning = true;
@@ -89,35 +88,7 @@ public class GameController {
             @Override
             protected Void call() throws Exception {
                 while(gameRunning && !isCancelled()) {
-                    switch (currentDirection) {
-                        case UP: {
-                            snake.moveUp();
-                            resolveCollisions(CollisionDetector.detectCollisionsWithRoot(snake.getHead(), getAllCurrentGameObjects()));
-                            break;
-                        }
-                        case DOWN: {
-                            snake.moveDown();
-                            resolveCollisions(CollisionDetector.detectCollisionsWithRoot(snake.getHead(), getAllCurrentGameObjects()));
-                            break;
-                        }
-                        case LEFT: {
-                            snake.moveLeft();
-                            resolveCollisions(CollisionDetector.detectCollisionsWithRoot(snake.getHead(), getAllCurrentGameObjects()));
-                            break;
-                        }
-                        case RIGHT: {
-                            snake.moveRight();
-                            resolveCollisions(CollisionDetector.detectCollisionsWithRoot(snake.getHead(), getAllCurrentGameObjects()));
-                            break;
-                        }
-                    }
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException exception) {
-                        if(isCancelled()) {
-                            break;
-                        }
-                    }
+                    snake.move(currentDirection);
                 }
                 return null;
             }
@@ -145,11 +116,8 @@ public class GameController {
                 break;
             }
             case GAIN: {
-                System.out.println("HERE");
-                snake.feed();
                 System.out.println("FOOD EATEN");
                 newFood();
-                printObj();
                 break;
             }
             case LOSS: {
@@ -192,12 +160,10 @@ public class GameController {
             @Override
             protected Void call() throws Exception {
                 while(gameRunning && !isCancelled()) {
-                    printObj();
-                    printSnake();
                     gameCanvas.setObj(getAllCurrentGameObjects());
                     gameCanvas.render();
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(500);
                     } catch (InterruptedException exception) {
                         if(isCancelled()) {
                             break;

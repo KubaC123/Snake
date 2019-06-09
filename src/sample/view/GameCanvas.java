@@ -21,6 +21,7 @@ public class GameCanvas extends Canvas {
     }
 
     public void render() {
+        System.out.println("RENDER");
         getGraphicsContext2D().clearRect(0, 0, getWidth(), getHeight());
         getGraphicsContext2D().setFill(Color.BLACK);
         gameObjects.stream()
