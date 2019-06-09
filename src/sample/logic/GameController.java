@@ -43,7 +43,7 @@ public class GameController {
         startGame();
     }
 
-    public void startGame() {
+    private void startGame() {
         gameRunning = true;
         startGameCanvasRenderThread();
         startSnakeMovementThread();
@@ -100,14 +100,15 @@ public class GameController {
     }
 
     private Optional<OnCollisionAction> checkCollisionWithWalls() {
-        OnCollisionAction action = null;
-        if((snake.getHead().getY() < 0) ||
-                (snake.getHead().getY() > gameCanvas.getHeight()) ||
-                (snake.getHead().getX() < 0) ||
-                (snake.getHead().getX() > gameCanvas.getWidth())) {
-            action = OnCollisionAction.DEAD;
-        }
-        return Optional.ofNullable(action);
+//        OnCollisionAction action = null;
+//        if((snake.getHead().getY() < 0) ||
+//                (snake.getHead().getY() > gameCanvas.getHeight()) ||
+//                (snake.getHead().getX() < 0) ||
+//                (snake.getHead().getX() > gameCanvas.getWidth())) {
+//            action = OnCollisionAction.DEAD;
+//        }
+//        return Optional.ofNullable(action);
+        return Optional.empty();
     }
 
     private void resolveCollision(OnCollisionAction onCollisionAction) {
