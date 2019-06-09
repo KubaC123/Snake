@@ -17,7 +17,7 @@ public class Main extends Application {
         GameCanvas gameCanvas = new GameCanvas(GameController.GAME_CANVAS_WIDTH, GameController.GAME_CANVAS_HEIGHT);
         GameController gameController = new GameController(gameCanvas);
         GameLayout gameLayout = new GameLayout(gameCanvas, gameController);
-        primaryStage.setTitle("Snake :)");
+        primaryStage.setTitle("TRUMP SNAKE XD");
         Scene scene = new Scene(gameLayout, GameController.MAIN_STAGE_WIDTH, gameController.MAIN_STAGE_HEIGHT);
         scene.setOnKeyPressed(key ->  {
             switch (key.getCode()) {

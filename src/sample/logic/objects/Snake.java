@@ -30,7 +30,7 @@ public class Snake {
             prevBodyPartDirection = body.get(bodyNr).getPreviousDirection();
         }
         try {
-            Thread.sleep(1000);
+            Thread.sleep(150);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,6 +60,11 @@ public class Snake {
             }
         }
         body.add(new SnakeBody(xStart, yStart, GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, lastBodyPartDirection));
+    }
+
+    public void removeLastBodyPart() {
+        int bodySize = body.size();
+        body.remove(bodySize - 1);
     }
 
     public GameObject getHead() {

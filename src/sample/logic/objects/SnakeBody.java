@@ -22,22 +22,18 @@ public class SnakeBody extends GameObject implements Movable {
         currentDirection = newDirection;
         switch(currentDirection) {
             case UP: {
-                System.out.println("BODY MOVE UP");
                 updateCoordinates(getX(), getY() - GameController.SPEED);
                 break;
             }
             case DOWN: {
-                System.out.println("BODY MOVE DOWN");
                 updateCoordinates(getX(), getY() + GameController.SPEED);
                 break;
             }
             case LEFT: {
-                System.out.println("BODY MOVE LEFT");
                 updateCoordinates(getX() - GameController.SPEED, getY());
                 break;
             }
             case RIGHT: {
-                System.out.println("BODY MOVE RIGHT");
                 updateCoordinates(getX() + GameController.SPEED, getY());
                 break;
             }

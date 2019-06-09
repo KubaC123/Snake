@@ -5,6 +5,7 @@ import sample.core.GameObject;
 import sample.core.Movable;
 import sample.logic.GameController;
 import sample.logic.GameObjectType;
+import sample.view.Images;
 
 public class SnakeHead extends GameObject implements Movable {
 
@@ -12,7 +13,7 @@ public class SnakeHead extends GameObject implements Movable {
     private Direction previousDirection;
 
     public SnakeHead(double xCoordinate, double yCoordinate, double width, double height, Direction direction) {
-        super(xCoordinate, yCoordinate, width, height, GameObjectType.SNAKE_HEAD);
+        super(xCoordinate, yCoordinate, width, height, GameObjectType.SNAKE_HEAD, Images.TRUMP);
         this.currentDirection = direction;
     }
 

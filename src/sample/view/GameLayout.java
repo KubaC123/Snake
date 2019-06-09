@@ -1,24 +1,39 @@
 package sample.view;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import sample.logic.GameController;
 
-public class GameLayout extends BorderPane {
+import java.util.ArrayList;
+import java.util.List;
+
+public class GameLayout extends HBox {
 
     GameController gameController;
 
     public GameLayout(GameCanvas gameCanvas, GameController gameController) {
         this.gameController = gameController;
-        this.setCenter(gameCanvas);
-        this.setRight(rightSideMenu());
+        getChildren().add(gameCanvas);
+        getChildren().add(rightSideMenu());
+        setPadding(new Insets(0, 50, 0, 0));
+        setSpacing(50.0);
     }
 
     private VBox rightSideMenu() {
-        VBox rightSideMenuVBox = new VBox();
-        rightSideMenuVBox.getChildren().addAll(startGameButton(), stopGameButton(), restartGameButton());
-        return rightSideMenuVBox;
+        List<Button> buttons = new ArrayList<>();
+        buttons.add(startGameButton());
+        buttons.add(stopGameButton());
+        buttons.add(restartGameButton());
+        buttons.forEach(button -> button.setMaxSize(100.0, 30.0));
+        VBox vbox = new VBox();
+        vbox.setPadding(new Insets(20, 0, 20, 0));
+        vbox.setSpacing(20.0);
+        vbox.setAlignment(Pos.BASELINE_CENTER);
+        vbox.getChildren().addAll(buttons);
+        return vbox;
     }
 
     private Button startGameButton() {

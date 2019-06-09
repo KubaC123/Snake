@@ -43,7 +43,6 @@ public class GameObject extends Rectangle {
         try {
             this.image = new Image(new File(imagePath).toURI().toString());
         } catch (Exception e) {
-            System.out.println("ERROR WHILE OPENING IMAGE");
             e.printStackTrace();
         }
     }

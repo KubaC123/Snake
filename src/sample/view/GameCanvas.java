@@ -2,32 +2,35 @@ package sample.view;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import sample.core.GameObject;
-import sample.logic.GameObjectType;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class GameCanvas extends Canvas {
 
     private List<GameObject> gameObjects = new ArrayList<>();
+    private int score = 0;
 
     public GameCanvas(double width, double height) {
         super(width, height);
     }
 
-    public void setObj(List<GameObject> gameObjects) {
+    public void setObjects(List<GameObject> gameObjects) {
         this.gameObjects =gameObjects;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 
     public void render() {
         GraphicsContext graphicsContext = getGraphicsContext2D();
         graphicsContext.clearRect(0, 0, getWidth(), getHeight());
+        graphicsContext.setFill(Color.RED);
         System.out.println("RENDER");
         gameObjects.stream()
                 .collect(Collectors.groupingBy(GameObject::getType))
@@ -35,6 +38,8 @@ public class GameCanvas extends Canvas {
                     graphicsContext.setFill(type.getColor());
                     objects.forEach(gameObject -> drawGameObject(gameObject, graphicsContext));
                 });
+        graphicsContext.setFill(Color.RED);
+        graphicsContext.fillText("SCORE: " + score, 20 ,15);
     }
 
     private void drawGameObject(GameObject gameObject, GraphicsContext graphicsContext) {
@@ -43,5 +48,12 @@ public class GameCanvas extends Canvas {
         } else {
             graphicsContext.fillRect(gameObject.getX(), gameObject.getY(), gameObject.getWidth(), gameObject.getHeight());
         }
+    }
+
+    public void youLostScreen() {
+        GraphicsContext graphicsContext = getGraphicsContext2D();
+        graphicsContext.clearRect(0, 0, getWidth(), getHeight());
+        graphicsContext.setFill(Color.RED);
+        graphicsContext.fillText("Game over! You scored: " + score, 200, 200);
     }
 }
