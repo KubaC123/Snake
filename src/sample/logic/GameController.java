@@ -24,18 +24,20 @@ public class GameController {
     public static double SPEED = 20.d;
     public static double GAME_CANVAS_WIDTH = 600.d;
     public static double GAME_CANVAS_HEIGHT = 600.d;
-    public static double MAIN_STAGE_WIDTH = 800.d;
-    public static double MAIN_STAGE_HEIGHT = 600.d;
+    public static double MAIN_STAGE_WIDTH = 900.d;
+    public static double MAIN_STAGE_HEIGHT = 900.d;
     public static final double SNAKE_INITIAL_X_COORDINATE = 100.d;
     public static final double SNAKE_INITIAL_Y_COORDINATE = 100.d;
     public static Direction DEFAULT_DIRECTION = Direction.RIGHT;
 
     private Direction currentDirection;
     private boolean gameRunning = true;
+    private boolean restarted = false;
 
     private Snake snake;
     private AtomicReference<Food> food;
     private AtomicReference<Poison> poison;
+    private double wallSize = 20.d;
 
     private AtomicInteger score = new AtomicInteger(0);
 
@@ -53,12 +55,13 @@ public class GameController {
         foodImages.add(Images.BERRY);
         foodImages.add(Images.COLA);
         foodImages.add(Images.COLAZERO);
-        food = new AtomicReference<>(new Food(120, 120, 20, 20, foodImages.get(random.nextInt(foodImages.size()))));
+        food = new AtomicReference<>(new Food(120, 120,
+                GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, foodImages.get(random.nextInt(foodImages.size()))));
         poison = new AtomicReference<>(null);
+        startGame();
     }
 
     private ArrayList<Wall> getRoomWalls() {
-        double wallSize = 20.d;
         ArrayList<Wall> walls = new ArrayList<>();
         walls.add(new Wall(0, 0, gameCanvas.getWidth(), wallSize));
         walls.add(new Wall(0, 0, wallSize, gameCanvas.getHeight()));
@@ -78,14 +81,17 @@ public class GameController {
     }
 
     public void restartGame() {
+        gameRunning = false;
         resetGameState();
         gameRunning = true;
+        startGame();
     }
 
     private void resetGameState() {
         score.set(0);
         snake = new Snake();
-        food.set(new Food(120, 120, 20, 20, foodImages.get(random.nextInt(foodImages.size()))));
+        food.set(new Food(120, 120,
+                GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, foodImages.get(random.nextInt(foodImages.size()))));
         this.currentDirection = Direction.RIGHT;
     }
 
@@ -123,7 +129,7 @@ public class GameController {
     }
 
     private void checkCollisionWithWalls(List<OnCollisionAction> collisionActions) {
-        if((snake.getHead().getY() < 0) || (snake.getHead().getY() > gameCanvas.getHeight()) || (snake.getHead().getX() < 0) || (snake.getHead().getX() > gameCanvas.getWidth())) {
+        if((snake.getHead().getY() < wallSize) || (snake.getHead().getY() > gameCanvas.getHeight() - wallSize) || (snake.getHead().getX() < wallSize) || (snake.getHead().getX() > gameCanvas.getWidth() - wallSize)) {
             collisionActions.add(OnCollisionAction.DEAD);
         }
     }
@@ -138,7 +144,9 @@ public class GameController {
             case GAIN: {
                 poison.set(null);
                 score.set(score.intValue() + 20);
-                snake.addBodyPart();
+                for(int i=0; i<1; i++) {
+                    snake.addBodyPart();
+                }
                 newFood();
                 break;
             }
@@ -165,7 +173,8 @@ public class GameController {
 
     private void newFood() {
         Point2D point = findFreePoint();
-        food.set(new Food(point.getX(), point.getY(), 20 ,20, foodImages.get(random.nextInt(foodImages.size()))));
+        food.set(new Food(point.getX(), point.getY(), GameObject.DEFAULT_WIDTH,
+                GameObject.DEFAULT_HEIGHT, foodImages.get(random.nextInt(foodImages.size()))));
         if(random.nextInt(2) == 1) {
             newPoison();
         }
@@ -176,10 +185,10 @@ public class GameController {
         double yCoordinate = 0.d;
         boolean found = false;
         while(!found) {
-            xCoordinate = random.nextInt((int)gameCanvas.getWidth() - 40);
-            yCoordinate = random.nextInt((int)gameCanvas.getHeight() - 40);
+            xCoordinate = random.nextInt((int)gameCanvas.getWidth() - 80);
+            yCoordinate = random.nextInt((int)gameCanvas.getHeight() - 80);
 
-            for(GameObject gameObject : snake.getHeadAndBody()) {
+            for(GameObject gameObject : getAllCurrentGameObjects()) {
                 if(gameObject.getX() == xCoordinate && gameObject.getY() == yCoordinate);
             }
             found = true;
@@ -189,7 +198,8 @@ public class GameController {
 
     private void newPoison() {
         Point2D point = findFreePoint();
-        poison.set(new Poison(point.getX(), point.getY(), 20, 20));
+        poison.set(new Poison(point.getX(), point.getY(),
+                GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT));
     }
 
 

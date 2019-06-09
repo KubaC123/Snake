@@ -13,7 +13,7 @@ public class SnakeHead extends GameObject implements Movable {
     private Direction previousDirection;
 
     public SnakeHead(double xCoordinate, double yCoordinate, double width, double height, Direction direction) {
-        super(xCoordinate, yCoordinate, width, height, GameObjectType.SNAKE_HEAD, Images.TRUMP);
+        super(xCoordinate, yCoordinate, width, height, GameObjectType.SNAKE_HEAD, Images.HEAD);
         this.currentDirection = direction;
     }
 
@@ -23,22 +23,18 @@ public class SnakeHead extends GameObject implements Movable {
         currentDirection = newDirection;
         switch(currentDirection) {
             case UP: {
-                System.out.println("HEAD MOVE UP");
                 updateCoordinates(getX(), getY() - GameController.SPEED);
                 break;
             }
             case DOWN: {
-                System.out.println("HEAD MOVE DOWN");
                 updateCoordinates(getX(), getY() + GameController.SPEED);
                 break;
             }
             case LEFT: {
-                System.out.println("HEAD MOVE LEFT");
                 updateCoordinates(getX() - GameController.SPEED, getY());
                 break;
             }
             case RIGHT: {
-                System.out.println("HEAD MOVE RIGHT");
                 updateCoordinates(getX() + GameController.SPEED, getY());
                 break;
             }

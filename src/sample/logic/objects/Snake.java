@@ -16,9 +16,9 @@ public class Snake {
         this.head = new SnakeHead(GameController.SNAKE_INITIAL_X_COORDINATE, GameController.SNAKE_INITIAL_Y_COORDINATE,
                 GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, GameController.DEFAULT_DIRECTION);
         this.body = new ArrayList<>();
-        body.add(new SnakeBody(GameController.SNAKE_INITIAL_X_COORDINATE - 20, GameController.SNAKE_INITIAL_Y_COORDINATE,
+        body.add(new SnakeBody(GameController.SNAKE_INITIAL_X_COORDINATE - GameObject.DEFAULT_HEIGHT, GameController.SNAKE_INITIAL_Y_COORDINATE,
                 GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, GameController.DEFAULT_DIRECTION));
-        body.add(new SnakeBody(GameController.SNAKE_INITIAL_X_COORDINATE - 40, GameController.SNAKE_INITIAL_Y_COORDINATE,
+        body.add(new SnakeBody(GameController.SNAKE_INITIAL_X_COORDINATE - 2*GameObject.DEFAULT_HEIGHT, GameController.SNAKE_INITIAL_Y_COORDINATE,
                 GameObject.DEFAULT_WIDTH, GameObject.DEFAULT_HEIGHT, GameController.DEFAULT_DIRECTION));
     }
 
@@ -30,7 +30,7 @@ public class Snake {
             prevBodyPartDirection = body.get(bodyNr).getPreviousDirection();
         }
         try {
-            Thread.sleep(150);
+            Thread.sleep(400);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,19 +43,19 @@ public class Snake {
         Direction lastBodyPartDirection = body.get(bodySize - 1).getCurrentDirection();
         switch(lastBodyPartDirection) {
             case UP: {
-                yStart += 20.d;
+                yStart += GameObject.DEFAULT_HEIGHT;
                 break;
             }
             case DOWN: {
-                yStart -= 20.d;
+                yStart -= GameObject.DEFAULT_HEIGHT;
                 break;
             }
             case LEFT: {
-                xStart += 20.d;
+                xStart += GameObject.DEFAULT_HEIGHT;
                 break;
             }
             case RIGHT: {
-                xStart -= 20.d;
+                xStart -= GameObject.DEFAULT_HEIGHT;
                 break;
             }
         }

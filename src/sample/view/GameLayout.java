@@ -24,8 +24,8 @@ public class GameLayout extends HBox {
 
     private VBox rightSideMenu() {
         List<Button> buttons = new ArrayList<>();
-        buttons.add(startGameButton());
-        buttons.add(stopGameButton());
+//        buttons.add(startGameButton());
+//        buttons.add(stopGameButton());
         buttons.add(restartGameButton());
         buttons.forEach(button -> button.setMaxSize(100.0, 30.0));
         VBox vbox = new VBox();
@@ -36,17 +36,17 @@ public class GameLayout extends HBox {
         return vbox;
     }
 
-    private Button startGameButton() {
-        Button startGameButton = new Button("Start");
-        startGameButton.setOnAction(event -> gameController.startGame());
-        return startGameButton;
-    }
-
-    private Button stopGameButton() {
-        Button startGameButton = new Button("Stop");
-        startGameButton.setOnAction(event -> gameController.stopGame());
-        return startGameButton;
-    }
+//    private Button startGameButton() {
+//        Button startGameButton = new Button("Start");
+//        startGameButton.setOnAction(event -> gameController.startGame());
+//        return startGameButton;
+//    }
+//
+//    private Button stopGameButton() {
+//        Button startGameButton = new Button("Stop");
+//        startGameButton.setOnAction(event -> gameController.stopGame());
+//        return startGameButton;
+//    }
 
     private Button restartGameButton() {
         Button startGameButton = new Button("Restart");

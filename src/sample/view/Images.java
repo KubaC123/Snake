@@ -9,7 +9,9 @@ public enum Images {
     COLAZERO("cocacolazero.png"),
     KIWI("kiwi.png"),
     POISON("poison.png"),
-    TRUMP("trump.png");
+    TRUMP("trump.png"),
+    LEGO("lego.png"),
+    HEAD("head.png");
 
     String fileName;
 

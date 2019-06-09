@@ -31,7 +31,6 @@ public class GameCanvas extends Canvas {
         GraphicsContext graphicsContext = getGraphicsContext2D();
         graphicsContext.clearRect(0, 0, getWidth(), getHeight());
         graphicsContext.setFill(Color.RED);
-        System.out.println("RENDER");
         gameObjects.stream()
                 .collect(Collectors.groupingBy(GameObject::getType))
                 .forEach((type, objects) -> {
