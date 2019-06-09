@@ -166,16 +166,14 @@ public class GameController {
         currentDirection = direction;
     }
 
-    public void restartGame() {
-        gameRunning = false;
-        resetGameState();
-        gameRunning = true;
-        startGame();
-    }
-
     private void setGameFail() {
         gameRunning = false;
         gameCanvas.youLostScreen();
+    }
+
+    public void restartGame() {
+        resetGameState();
+        startGame();
     }
 
     private void resetGameState() {
@@ -184,5 +182,4 @@ public class GameController {
         food.set(ObjectSpawned.startFood());
         this.currentDirection = Direction.RIGHT;
     }
-
 }
